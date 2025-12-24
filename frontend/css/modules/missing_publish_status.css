@@ -1,0 +1,197 @@
+/* =========================================================
+   進度狀態列 (Step Bar) - 最終版本
+   ========================================================= */
+
+/* .line{
+    flex: 1;
+    height: 8px;
+    background-color: #664627;
+    margin: 20px 0 0;
+} */
+
+.missing_publish_step_bar {
+
+    padding: 40px 0;
+
+}
+
+.steps-progress {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+
+}
+
+
+/* 找到這一段並修改 */
+.steps-progress::before {
+    content: '';
+    /* 啟動偽元素 */
+    position: absolute;
+    /* 絕對定位 */
+
+    /* --- 位置與大小設定 --- */
+    top: 42px;
+    /* 🟢 垂直位置：請根據您的畫面微調此數值 (約在 step-label 的中間) */
+    left: 12%;
+    /* 🟢 左邊起點：讓線條從第一個按鈕中心開始 (因為 width 20% + space-around) */
+    right: 12%;
+    /* 🟢 右邊終點：讓線條在最後一個按鈕中心結束 */
+    height: 5px;
+    /* 線條粗細 */
+
+    /* --- 顏色與層級 --- */
+    background-color: #D5C8B8;
+    /* 接近圖片中的淺褐灰色 (您也可以改用 #756B61) */
+    z-index: 1;
+    /* 層級設為 1，確保它在 Step (z-index: 2) 的下面 */
+}
+
+.steps-complete1::after {
+    content: '';
+    /* 啟動偽元素 */
+    position: absolute;
+    /* 絕對定位 */
+
+    /* --- 位置與大小設定 --- */
+    top: 42px;
+    /* 🟢 垂直位置：請根據您的畫面微調此數值 (約在 step-label 的中間) */
+    left: 12%;
+    /* 🟢 左邊起點：讓線條從第一個按鈕中心開始 (因為 width 20% + space-around) */
+    right: 62%;
+    /* 🟢 右邊終點：讓線條在最後一個按鈕中心結束 */
+    height: 8px;
+    /* 線條粗細 */
+
+    /* --- 顏色與層級 --- */
+    background-color: #AB9073;
+    /* 接近圖片中的淺褐灰色 (您也可以改用 #756B61) */
+    z-index: 1;
+    /* 層級設為 1，確保它在 Step (z-index: 2) 的下面 */
+}
+
+.steps-complete2::after {
+    content: '';
+    /* 啟動偽元素 */
+    position: absolute;
+    /* 絕對定位 */
+
+    /* --- 位置與大小設定 --- */
+    top: 42px;
+    /* 🟢 垂直位置：請根據您的畫面微調此數值 (約在 step-label 的中間) */
+    left: 12%;
+    /* 🟢 左邊起點：讓線條從第一個按鈕中心開始 (因為 width 20% + space-around) */
+    right: 37%;
+    /* 🟢 右邊終點：讓線條在最後一個按鈕中心結束 */
+    height: 8px;
+    /* 線條粗細 */
+
+    /* --- 顏色與層級 --- */
+    background-color: #AB9073;
+    /* 接近圖片中的淺褐灰色 (您也可以改用 #756B61) */
+    z-index: 1;
+    /* 層級設為 1，確保它在 Step (z-index: 2) 的下面 */
+}
+
+.steps-complete3::after {
+    content: '';
+    /* 啟動偽元素 */
+    position: absolute;
+    /* 絕對定位 */
+
+    /* --- 位置與大小設定 --- */
+    top: 42px;
+    /* 🟢 垂直位置：請根據您的畫面微調此數值 (約在 step-label 的中間) */
+    left: 12%;
+    /* 🟢 左邊起點：讓線條從第一個按鈕中心開始 (因為 width 20% + space-around) */
+    right: 12%;
+    /* 🟢 右邊終點：讓線條在最後一個按鈕中心結束 */
+    height: 8px;
+    /* 線條粗細 */
+
+    /* --- 顏色與層級 --- */
+    background-color: #AB9073;
+    /* 接近圖片中的淺褐灰色 (您也可以改用 #756B61) */
+    z-index: 1;
+    /* 層級設為 1，確保它在 Step (z-index: 2) 的下面 */
+}
+
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 20%;
+
+    padding: 0 10px;
+    margin: 0 5px;
+}
+
+
+
+/* 步驟塊的容器，模擬圖片中的圓角矩形 */
+.step-label {
+    padding: 8px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    /* 預設狀態文字顏色 */
+    color: #504033;
+    /* 預設狀態背景 (圖片中的淺米色) */
+    background-color: #D5C8B8;
+    /* padding: 10px 15px; */
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+
+    .step-label {
+    padding: 2px 6px;
+   
+}
+}
+
+/* 內部 Step 數字 (Step 1, 2, 3, 4) */
+.step-circle {
+    margin-right: 0;
+    /* 增加底部的垂直間距 */
+    margin-bottom: 5px;
+
+
+    font-size: 0.9rem;
+    font-weight: bold;
+    /* 預設狀態數字顏色 */
+
+    color: #504033;
+    white-space: nowrap;
+}
+
+
+/* ------------------- 活躍狀態 (current) 樣式 ------------------- */
+
+.step.current .step-circle {
+    /* 活躍狀態的 Step 數字顏色 (圖片中 Step 數字的顏色與背景相似，但我們讓它統一) */
+    color: #504033;
+}
+
+/* ---------已完成狀態------------- */
+
+.step.complete .step-label {
+    background-color: #AB9073;
+    /* 活躍狀態文字顏色 */
+    color: #FFFBF7;
+}
+
+.step.current .step-label {
+    /* 活躍狀態背景顏色 (圖片中的深棕色) */
+    background-color: #756B61;
+    /* 活躍狀態文字顏色 */
+    color: #FFFBF7;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}

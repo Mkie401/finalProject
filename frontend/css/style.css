@@ -1,0 +1,38 @@
+/* src/main/resources/static/css/style.css */
+
+/* 1. 引入基礎樣式 */
+@import url("base/variables.css");
+@import url("base/frame.css");
+
+/* 2. 引入所有業務模組的樣式 */
+@import url("modules/floatFlag.css");
+@import url("modules/footer.css");
+@import url("modules/navbar.css");
+@import url("modules/pet-adoption-list.css");
+@import url("modules/pet-adoption-detail.css");
+@import url("modules/alert.css");
+
+/* 3. 全局自訂樣式 */
+body {
+    background-color: var(--color-background);
+    /* 使用 variables.css 中的變數 */
+    font-family: '微軟正黑體', 'Microsoft JhengHei', sans-serif;
+    color: var(--font-color-primary);
+}
+
+/* 修正頁面跳到中間的問題 */
+html {
+    scroll-behavior: auto !important;
+    scroll-padding-top: 0 !important;
+}
+
+body {
+    scroll-margin-top: 0 !important;
+    scroll-padding-top: 0 !important;
+}
+
+/* 防止容器自動定位到中間 */
+.container, .title-container, .banner-image {
+    scroll-margin-top: 0 !important;
+    scroll-snap-align: none !important;
+}

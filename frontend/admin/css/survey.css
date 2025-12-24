@@ -1,0 +1,421 @@
+/* 主容器布局 */
+/* 頁面標題 */
+.page-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #504033;
+    margin-bottom: 15px;
+}
+
+/* 問卷區塊 */
+.survey-section {
+    margin-bottom: 50px;
+}
+
+/* 區塊標題 */
+.section-title {
+    color: #704C38;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* 問卷項目 */
+.survey-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Edit 按鈕 */
+.edit-btn {
+    background-color: transparent;
+    color: #DE7E0A;
+    border: 2px solid #9B7E66;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #9B7E66;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(155, 126, 102, 0.3);
+}
+
+.edit-btn:active {
+    transform: translateY(0);
+}
+
+/* 更新資訊 */
+.update-info {
+    color: #8B7355;
+    font-size: 16px;
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+    .content {
+        padding: 30px 40px;
+    }
+    
+    .page-title {
+        font-size: 32px;
+    }
+    
+    .section-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        margin-left: 0;
+        padding: 20px;
+    }
+    
+    .page-title {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        font-size: 22px;
+    }
+    
+    .survey-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .edit-btn {
+        width: 100%;
+    }
+}
+
+/* Modal 遮罩層 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+/* Modal 內容容器 */
+.modal-content {
+    background-color: #F5F0EA;
+    margin: 3% auto;
+    width: 90%;
+    max-width: 850px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal 標題區 */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 30px;
+    border-bottom: 2px solid #C9B9A8;
+}
+
+.modal-title {
+    color: #504033;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 36px;
+    color: #704C38;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.close-btn:hover {
+    color: #504033;
+}
+
+/* Modal 主體 */
+.modal-body {
+    padding: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* 問卷列表 */
+.question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* 問卷題目項目 */
+.question-item {
+    background-color: #D5C8B8;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.question-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.question-item.dragging {
+    opacity: 0.5;
+    cursor: move;
+}
+
+/* 問卷題目標題 */
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.question-header:hover {
+    background-color: #9B8579;
+}
+
+/* 排序按鈕區域 */
+.sort-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 12px;
+}
+
+/* 排序按鈕 */
+.sort-btn {
+    background-color: #9B7E66;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sort-btn:hover:not(:disabled) {
+    background-color: #704C38;
+    transform: scale(1.1);
+}
+
+.sort-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.sort-btn:disabled {
+    background-color: #C4B5A0;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* 拖曳手柄 */
+.drag-handle {
+    color: #9B7E66;
+    font-size: 20px;
+    cursor: move;
+    user-select: none;
+    padding: 0 4px;
+}
+
+.drag-handle:hover {
+    color: #704C38;
+}
+
+/* 題目編號 */
+.question-number {
+    color: #704C38;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 8px;
+    min-width: 30px;
+}
+
+.question-text {
+    color: #504033;
+    font-size: 18px;
+    font-weight: 500;
+    flex: 1;
+    padding-right: 20px;
+}
+
+/* 展開/收合按鈕 */
+.toggle-btn {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #704C38;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.toggle-btn:hover {
+    color: #504033;
+}
+
+/* 問卷答案區域 */
+.question-answer {
+    padding: 0 24px 20px 24px;
+    position: relative;
+}
+
+/* 答案輸入框 */
+.answer-input {
+    width: 100%;
+    padding: 15px;
+    background-color: #FFFFFF;
+    border: 2px solid #C9B9A8;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #504033;
+    resize: vertical;
+    min-height: 100px;
+    font-family: 'Outfit', Arial, sans-serif;
+}
+
+.answer-input:focus {
+    outline: none;
+    border-color: #9B7E66;
+}
+
+/* 刪除按鈕 */
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 34px;
+    background-color: #D9534F;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #C9302C;
+    transform: scale(1.1);
+}
+
+/* 新增題目按鈕 */
+.add-question-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #9B7E66;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-question-btn:hover {
+    background-color: #8B6E56;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(155, 126, 102, 0.3);
+}
+
+/* Modal 底部 */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 20px 30px;
+    border-top: 2px solid #C9B9A8;
+}
+
+.btn-cancel,
+.btn-save {
+    padding: 12px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    background-color: transparent;
+    color: #704C38;
+    border: 2px solid #9B7E66;
+}
+
+.btn-cancel:hover {
+    background-color: #F5EDE3;
+}
+
+.btn-save {
+    background-color: #9B7E66;
+    color: #FFFFFF;
+}
+
+.btn-save:hover {
+    background-color: #8B6E56;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(155, 126, 102, 0.3);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    .modal-header,
+    .modal-footer {
+        padding: 20px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .question-text {
+        font-size: 16px;
+    }
+}

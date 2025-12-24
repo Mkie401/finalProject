@@ -1,0 +1,805 @@
+/* ========================================================= */
+/* Chat Server CSS - 完整版 (含紅點通知、修復版面)             */
+/* ========================================================= */
+
+#floating-chat {
+  --color-primary: #d5c8b8;
+  --color-light: #fff;
+  --color-medium: #e9e2d8;
+  --color-dark: #504033;
+  --color-accent: #c0874e;
+  --color-red: #9c4332;
+  --color-down: #97795d;
+
+  --app-width: 1000px;
+  --app-height: 700px;
+  --left-width: 220px;
+  --right-width: 200px;
+
+  font-family: "微軟正黑體", "Microsoft JhengHei", sans-serif;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: fixed;
+  z-index: 9999;
+
+  transition: width 0.4s, height 0.4s, top 0.4s, left 0.4s, margin 0.4s, border-radius 0.4s;
+}
+
+/* 狀態 A: 展開 */
+#floating-chat.expanded {
+  width: var(--app-width);
+  height: var(--app-height);
+  top: 50%;
+  left: 50%;
+  margin-left: calc(var(--app-width) / -2);
+  margin-top: calc(var(--app-height) / -2);
+  border-radius: 10px;
+  opacity: 1;
+}
+
+/* 狀態 B: 最小化 */
+#floating-chat:not(.expanded) {
+  width: 60px;
+  height: 60px;
+  top: 85%;
+  left: 90%;
+  margin-left: -30px;
+  margin-top: -30px;
+  border-radius: 50%;
+  background-color: var(--color-dark);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 內容顯示控制 */
+#chat-window-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.2s ease;
+}
+
+#floating-chat.expanded #chat-window-content {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#floating-chat:not(.expanded) #chat-window-content {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* 小球圖示 */
+#minimized-ball-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#floating-chat:not(.expanded) #minimized-ball-icon {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.4s;
+}
+
+/* ========================================================= */
+/* 內部排版 */
+/* ========================================================= */
+
+#global-navbar {
+  width: 100%;
+  height: 60px;
+  background-color: var(--color-primary);
+  color: var(--color-dark);
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: var(--left-width) 1fr var(--right-width);
+  align-items: center;
+}
+
+.global-center-header {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.global-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.global-user-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ccc;
+  flex-shrink: 0;
+}
+
+.global-user-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.global-navbar-right {
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 15px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+.container {
+  flex-grow: 1;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: var(--left-width) 1fr var(--right-width);
+}
+
+/* 左側列表 */
+.sidebar-left {
+  background: #efe8e1;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-menu {
+  display: flex;
+  padding: 10px;
+}
+
+.tab-menu button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  background: #c0874e;
+  color: #fff;
+  cursor: pointer;
+}
+
+.tab-menu button:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.tab-menu button:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.tab-menu .active-tab {
+  background: #fff;
+  color: #504033;
+  font-weight: bold;
+}
+
+.conversation-list {
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list-item {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.list-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.list-item.selected {
+  background: #ebf5fb;
+  border: 1px solid var(--color-accent);
+}
+
+.list-item .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.list-item .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.list-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.list-preview {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 中間聊天區 */
+.chat-main {
+  background: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+#messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.message-row.sent {
+  justify-content: flex-end;
+}
+
+.message-row.received {
+  justify-content: flex-start;
+}
+
+.avatar-area {
+  margin: 0 8px;
+  width: 40px;
+  min-width: 40px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.avatar-area img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: #ccc;
+  display: block;
+  object-fit: cover;
+}
+
+.message-content {
+  max-width: 70%;
+  min-width: 0;
+}
+
+.message-bubble {
+  display: inline-flex;
+  padding: 10px 14px;
+  border-radius: 18px;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.message-bubble img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin: 0;
+}
+
+.sent-bubble {
+  background: var(--color-accent);
+  color: white;
+  border-bottom-right-radius: 2px;
+}
+
+.received-bubble {
+  background: white;
+  border: 1px solid #ddd;
+  border-bottom-left-radius: 2px;
+}
+
+/* Footer */
+.chat-footer {
+  background: var(--color-down);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+#expanded-menu,
+#sticker-area,
+#quick-reply-menu {
+  animation: slideUp 0.2s ease-out;
+}
+
+#expanded-menu {
+  display: flex;
+  justify-content: space-around;
+  background: #97795d;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  gap: 5px;
+}
+
+.menu-icon-big {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 30px;
+}
+
+#sticker-area {
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.sticker-item {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.sticker-item:hover {
+  transform: scale(1.1);
+}
+
+/* 常用語選單 */
+.quick-reply-menu {
+  position: absolute;
+  bottom: 80px;
+  right: 15px;
+  width: 280px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  overflow: hidden;
+  display: none;
+}
+
+.quick-reply-header {
+  background: var(--color-accent);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.quick-reply-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  margin-top: auto;
+}
+
+.footer-icons {
+  display: flex;
+  gap: 10px;
+  color: white;
+  font-size: 30px;
+}
+
+.footer-icon-btn {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.input-wrapper {
+  flex: 1;
+  background: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 100%;
+}
+
+#message-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  background: transparent;
+}
+
+.input-face-icon {
+  color: #888;
+  cursor: pointer;
+  font-size: 25px;
+  margin-right: 5px;
+}
+
+.send-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* 右側用戶資料 */
+.sidebar-right {
+  background: #fdfbf7;
+  border-left: 1px solid #ddd;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.info-header {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: #504033;
+  padding: 20px 0;
+  border-bottom: 1px solid #d5c8b8;
+  background: #fdfbf7;
+}
+
+.info-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  background: white;
+}
+
+.info-icon-wrapper {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  color: #8d6e63;
+  font-size: 20px;
+}
+
+.info-avatar-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info-text-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text {
+  font-size: 14px;
+  color: #666;
+  font-family: Consolas, monospace;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+  display: block;
+}
+
+.info-note-area {
+  padding: 20px;
+  background: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-top: 5px solid #fdfbf7;
+}
+
+.info-note-area textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 100px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  resize: none;
+  font-size: 14px;
+  outline: none;
+}
+
+.action-button {
+  margin: 20px;
+  padding: 12px;
+  background: #d7ccc8;
+  color: #5d4037;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 左側列表頭像容器 */
+.sidebar-left .avatar {
+  width: 55px !important;
+  /* 調整寬度 */
+  height: 55px !important;
+  /* 調整高度 */
+  min-width: 55px;
+  /* 確保不會被擠壓 */
+  border-radius: 50%;
+  /* 圓形 */
+  overflow: hidden;
+  margin-right: 12px;
+  /* 與文字的間距 */
+}
+
+/* 確保圖片填滿容器 */
+.sidebar-left .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 確保圖片不變形 */
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   📱 浮窗 RWD 修正 (針對 #floating-chat)
+   ========================================= */
+@media screen and (max-width: 768px) {
+
+  /* 當浮窗被「展開」時 (.expanded) */
+  #floating-chat.expanded {
+    /* 1. 強制滿版，無視原本的寬高 */
+    width: 100vw !important;
+    /* 寬度 100% 視窗寬度 */
+    height: 100vh !important;
+    /* 高度 100% 視窗高度 */
+
+    /* 2. 定位歸零，黏死四個角落 */
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    /* 3. 去除圓角與邊距，更有 App 感 */
+    border-radius: 0 !important;
+    margin: 0 !important;
+
+    /* 4. 確保它在最上層 */
+    z-index: 9999 !important;
+
+    /* 5. 修正版面佈局方向 */
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* 確保內層容器也是滿的 */
+  #floating-chat.expanded .container {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 修正導覽列寬度 */
+  #global-navbar {
+    width: 100% !important;
+  }
+
+  /* 讓聊天訊息區自動伸縮填滿剩餘空間 */
+  .chat-main {
+    flex: 1 !important;
+    height: auto !important;
+  }
+
+}
+
+/* ========================================= */
+/* ★★★ 新訊息通知樣式 (紅點設定 - 修正版) ★★★ */
+/* ========================================= */
+
+/* 1. 懸浮球紅點 (對應 HTML 裡的 <div id="global-red-dot">) */
+.red-dot-badge {
+  position: absolute;
+  top: 0px;
+  /* 微調位置 */
+  right: 0px;
+  /* 微調位置 */
+  width: 15px;
+  height: 15px;
+  background-color: #ff3b30;
+  /* 蘋果紅 */
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+
+  /* ★ 關鍵：預設隱藏，加上 .show 才顯示 */
+  display: none;
+  pointer-events: none;
+  /* 讓紅點不影響點擊 */
+}
+
+/* JS 會加上這個 class 來讓紅點出現 */
+.red-dot-badge.show {
+  display: block !important;
+  animation: pulse 1.5s infinite;
+}
+
+/* ========================================= */
+/* 2. 客服列表的未讀樣式 (已合併重複設定) */
+/* ========================================= */
+
+/* 列表項目的基礎設定 (為了讓紅點定位) */
+.list-item {
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+/* 未讀狀態：背景變色 + 左側紅條 */
+.list-item.unread {
+  background-color: #fff0f0 !important;
+  /* 淺紅色背景 */
+  border-left: 4px solid #ff3b30;
+  /* 左側紅條標記 */
+}
+
+/* 未讀狀態：文字變紅加粗 */
+.list-item.unread .list-preview {
+  color: #ff3b30;
+  font-weight: bold;
+}
+
+/* 未讀狀態：右側小紅點 (偽元素寫法沒問題，保留) */
+.list-item.unread::after {
+  content: '';
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: #ff3b30;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+#floating-chat {
+  position: fixed;
+}
+
+#global-red-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+}
+
+#floating-chat:not(.expanded) {
+  overflow: visible !important;
+}
+
+#floating-chat.expanded #minimized-ball-icon {
+  opacity: 0 !important;
+  /* 透明度歸零 */
+  visibility: hidden !important;
+  /* ★ 加上這個！確保它真的消失，不會卡在那 */
+  pointer-events: none !important;
+  transition: opacity 0.2s, visibility 0.2s;
+  /* 順滑消失 */
+}
+
+/* 紅點本身的設定 (保持原本的，確認一下 z-index) */
+.red-dot-badge {
+  /* ...你原本的設定... */
+  z-index: 2001 !important;
+  /* 確保比 icon (2000) 高就好，不要高過視窗 (9999) */
+}
+
+
+/* ========================================= */
+/* 動畫設定 */
+/* ========================================= */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+
+
+}

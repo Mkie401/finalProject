@@ -1,0 +1,705 @@
+/* -----------------常見問題-------------------- */
+.index_qna_section {
+    padding: 40px 0;
+
+}
+
+.index_qna_wrapper {
+    /* 確保 Q&A 區塊佔用容器的一半寬度 */
+    width: 100%;
+    /* 桌面版會被 .container 限制，手機版佔滿 */
+    margin-bottom: 40px;
+    /* 與下方關於我們區塊間距 */
+}
+
+/* 常見問題 - 標題和查看更多 */
+.index_qna_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 0px;
+}
+
+.index_qna_header>h2 {
+    margin: 0;
+    padding: 0px;
+
+    background-color: #97795D;
+    /* 深棕色作為主要色 */
+    color: #FFFBF7;
+    font-weight: 800;
+    border-radius: 10px 10px 0 0;
+}
+
+.index_qna_more_link {
+    background-color: #FFFBF7;
+    padding: 10px;
+    color: #504033;
+    text-decoration: none;
+    font-weight: bolder;
+    display: inline-block;
+}
+
+/* .index_qna_more_link:hover {
+    background-color: #756B61;
+    color: #FFFBF7;
+} */
+
+/* 常見問題 - 列表容器 (白色有捲軸的區塊) */
+.index_qna_list {
+    background-color: #FFFBF7;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    height: auto;
+}
+
+
+
+
+/* Q&A 單項 */
+.qna_item {
+    margin-bottom: 5px;
+    border-bottom: 1px solid #FFFBF7;
+}
+
+.qna_header {
+    margin-top: 5px;
+
+    width: 100%;
+    padding: 15px;
+
+    background-color: #D5C8B8;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #504033;
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+
+    display: flex;
+    /* 啟用 Flexbox */
+    justify-content: space-between;
+    /* 讓子元素靠兩側對齊 */
+    align-items: center;
+    /* 垂直居中對齊 */
+    text-align: left;
+    /* 保持問題文字的對齊方式 */
+}
+
+.qna_header:hover {
+    border: 2px solid #756B61;
+}
+
+/* 展開時圖標旋轉 45 度 */
+.qna_header:not(.collapsed) .qna_icon {
+    /* 針對非 collapsed 狀態（即展開時）的圖標進行旋轉 */
+    transform: rotate(45deg);
+}
+
+.qna_icon {
+
+    color: #504033;
+    transition: all 0.2s ease;
+    /* 新增：讓旋轉和變色平滑過渡 */
+    flex-shrink: 0;
+    /* 確保圖標不會被擠壓 */
+    -webkit-text-stroke: 1px;
+}
+
+.qna_body {
+    padding: 2px 0px 15px 0px;
+    /* 調整內邊距，與問題對齊 */
+}
+
+.qna_answer {
+    background-color: #E9E2D8;
+    padding: 20px;
+    border-radius: 10px;
+    color: #504033;
+    font-weight: bolder;
+    /* border-left: 3px solid #D5C8B8; */
+    /* 答案左側的裝飾線 */
+}
+
+.qna_question {
+    text-align: left;
+    margin-right: 10px;
+    /* 增加與圖標之間的間距 */
+    flex-grow: 1;
+    /* 允許問題文字佔用剩餘空間 */
+}
+
+/* ------------------- 關於我們 區塊 --------------------- */
+
+.index_about_wrapper {
+    background-color: #D5C8B8;
+    padding: 30px;
+}
+
+/* 標題樣式 */
+.index_about_title h2 {
+    margin: 0 0 20px 0;
+    padding: 10px 15px;
+    background-color: #97795D;
+    font-weight: 800;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.about_brand_title>img {
+    width: 80%;
+    text-align: center;
+}
+
+.about_content_card {
+    background-color: #FFFBF7;
+    padding: 40px 40px 40px 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    min-height: 250px;
+    margin-bottom: 50px;
+    margin: 10px 30px 50px 30px;
+}
+
+/* 黑底白字標籤 */
+.concept_tag {
+    background-color: #756B61;
+    color: #FFFBF7;
+    display: inline-block;
+
+    padding: 8px 10px;
+
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 40px;
+    transform: translateY(-50%);
+}
+
+/* 標語 */
+.about_slogan_text {
+    font-size: 24px;
+    font-weight: 800;
+    color: #504033;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    /* 標語置中或靠左 */
+}
+
+.about_description_text {
+
+    background-color: #E9E2D8;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* 描述內文 */
+.about_description_text p {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #504033;
+    font-weight: 600;
+    text-align: center;
+    /* 依照圖片，文字靠右對齊 */
+    line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+    .about_description_text p {
+        font-size: 12px;
+
+    }
+
+    .about_description_text {
+        padding: 10px;
+    }
+
+    .about_slogan_text {
+        font-size: 18px;
+        font-weight: 800;
+        color: #504033;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .concept_tag {
+        font-size: 14px;
+        right: 0px;
+
+    }
+
+    .about_content_card {
+        background-color: #FFFBF7;
+        padding: 10px 10px 10px 10px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        position: relative;
+        min-height: 250px;
+        margin-bottom: 50px;
+        margin: 10px 30px 50px 30px;
+    }
+}
+
+
+
+/* --------------輪播圖-------------------- */
+/* 自定義輪播圖片樣式，確保圖片顯示且有固定高度 */
+.index_carousel_img {
+    /* 手機板 (sm) 預設高度 */
+    height: 70vh;
+    object-fit: cover;
+    /* 確保圖片不變形，填滿容器 */
+    border-radius: 0;
+}
+
+/* 平板或桌面分斷點：當螢幕寬度大於或等於 768px 時，調整高度 */
+@media (min-width: 768px) {
+    .index_carousel_img {
+        height: 70vh;
+    }
+}
+
+.index_carousel_section {
+    height: fit-content;
+}
+
+/* -------------跑馬燈區塊------------------ */
+.index_adoption_header {
+    display: flex;
+    /* 啟用 Flexbox 佈局 */
+    justify-content: space-between;
+    /* 關鍵：將子元素推向兩端 */
+    align-items: flex-end;
+    /* 讓 h2 和 a 垂直居中對齊 (可選，但推薦) */
+    padding: 20px 20px 0;
+    /* 給標題行添加一些內邊距，看起來更舒適 */
+    margin-bottom: 0px;
+
+}
+
+.index_adoption_header>h2 {
+    margin: 0;
+    padding: 15px;
+    background-color: #D5C8B8;
+    font-weight: 800;
+    border-radius: 10px 10px 0 0;
+}
+
+.index_qna_title>h2 {
+    margin: 0;
+    padding: 15px;
+    background-color: #FFFBF7;
+    font-weight: 800;
+    border-radius: 10px 10px 0 0;
+}
+
+.index_adoption_section {
+    background-color: #D5C8B8;
+    margin-top: 0;
+    /* 確保它沒有上外邊距 */
+    padding-bottom: 10px;
+}
+
+.index_adoption_more_link {
+
+    background-color: #FFFBF7;
+    /* margin-left: auto; */
+    padding: 10px;
+    /* bottom: 10px; */
+    color: #504033;
+    text-decoration: none;
+    font-weight: bolder;
+    display: inline-block;
+}
+
+.index_adoption_more_link:hover {
+
+    background-color: #756B61;
+    color: #FFFBF7;
+}
+
+/* -------------跑馬燈區塊------------------ */
+/* 跑馬燈 */
+.index-marquee-wrapper {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* 隱藏垂直滾動條 */
+    width: 100%;
+    /* 確保容器佔滿父容器寬度 */
+    /* padding-bottom: 20px; 如果需要，為滾動條留出空間 */
+    padding-top: 20px;
+    box-sizing: border-box;
+    /* 確保 padding 不會導致溢出 */
+}
+
+.index-marquee-track {
+    display: flex;
+
+}
+
+.index-marquee-track:active {
+    cursor: grabbing;
+}
+
+.index-card {
+    flex-shrink: 0;
+    width: 280px;
+    /* 280px (卡片寬度) + 20px (左右間距) */
+
+    /* 卡片之間的水平間距 */
+    padding: 0 10px;
+    /* 左右各 10px 間距 */
+    box-sizing: border-box;
+}
+
+.index-card:hover {
+    transform: translateY(-8px);
+}
+
+.index-scrollbar-wrapper {
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+.index-scrollbar {
+    width: 100%;
+}
+
+/* --------------卡片-------------- */
+/* Card Container */
+
+/* .index-card .lost-pet-card:hover {
+    background-color: #AB9073;
+} */
+
+/* 當滑鼠碰到 .lost-pet-card 時，強制讓裡面的 .pet-name 變成白色 */
+/* .index-card .lost-pet-card:hover .pet-name {
+    color: #FFFBF7;
+} */
+
+/* 確保 .card-info 內的文字也一起變成白色 (包含 p 標籤與 span) */
+/* .index-card .lost-pet-card:hover .card-info,
+.index-card .lost-pet-card:hover .detail-item,
+.index-card .lost-pet-card:hover .detail-value {
+    color: #FFFBF7;
+} */
+
+
+.index-card .lost-pet-card {
+    width: 260px;
+    /* 卡片寬度 */
+    background-color: #FFFBF7;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* 確保內容不會溢出圓角 */
+    padding: 15px 15px 25px 15px;
+    /* 上下左右內邊距，下方留多一點空間給文字 */
+    margin: 20px;
+    /* 卡片間距 */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    /* hover 動畫 */
+    position: relative;
+    /* 愛心定位 */
+    cursor: pointer;
+}
+
+/* Hover */
+.index-card .lost-pet-card:hover {
+    transform: translateY(-5px);
+    /* 向上浮動 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Image Wrapper */
+.index-card .card-image-wrapper {
+    width: 100%;
+    /* 保持圖片的寬高比，這裡假設圖片是方形的 */
+    padding-top: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    /* 圖片的輕微圓角 */
+    background-color: #504033;
+}
+
+.index-card .card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 圖片填滿容器，保持比例 */
+    display: block;
+    border-radius: 4px;
+    /* 圖片的輕微圓角 */
+}
+
+/* Heart Icon */
+/* 外層定位  */
+.index-card .lost-pet-card .heart-icon-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* 愛心本身 - 預設未收藏 (灰色輪廓) */
+.index-card .lost-pet-card .card-heart-icon {
+    font-size: 25px;
+    /* 調整愛心大小 */
+    color: #f0f0f0;
+    transition: color 0.3s ease, transform 0.1s ease;
+
+    filter: drop-shadow(0px 0px 0.5px rgba(0, 0, 0, 0.8));
+
+    }
+ 
+
+/* 收藏 (紅色實心) */
+.index-card .lost-pet-card .card-heart-icon.is-favorite {
+    color: #ff4747;
+    /* 收藏後的紅色 */
+    /* 增加一個小小的動畫效果，讓點擊更明顯 */
+    transform: scale(1.1);
+}
+
+/* 未收藏 Hover  */
+.index-card .lost-pet-card .card-heart-icon:not(.is-favorite):hover {
+    color: #cccccc;
+    /* Hover 時變成淺灰色 */
+}
+
+
+/* Card Info */
+.index-card .card-info {
+    padding: 15px 0 0 0;
+    /* 文字區塊上邊距 */
+    color: #504033;
+    /* 文字顏色 */
+    /* font-family: '微軟正黑體', 'Microsoft JhengHei', sans-serif; */
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: bolder;
+}
+
+.index-card .pet-name {
+    font-size: 32px;
+    /* 名字大小 */
+    font-weight: bolder;
+    text-align: right;
+    /* 名字靠左 */
+    margin-bottom: 10px;
+    color: #504033;
+    /* 名字顏色 */
+    letter-spacing: -0.5px;
+    /* 調整字母間距讓字體更緊湊 */
+    padding-left: 5px;
+}
+
+
+.index-card .detail-item {
+    margin-bottom: 3px;
+    /* 詳細資訊行間距 */
+    text-align: left;
+    /* 靠左對齊 */
+    padding-left: 5px;
+    /* 與圖片左邊緣對齊 */
+}
+
+.index_card_herf {
+    text-decoration: none;
+}
+
+/* --------------click動畫--------------- */
+
+.click-hint-gif {
+    position: absolute;
+    bottom: 10px;
+    /* 距離卡片底部 10px */
+    right: 5px;
+    /* 距離卡片右側 10px */
+    width: 80px;
+    height: auto;
+    opacity: 0;
+    /* 預設為透明（隱藏） */
+    transition: opacity 0.3s ease;
+    /* 增加 0.3秒 的淡入淡出動畫 */
+    pointer-events: none;
+    /* 關鍵：讓滑鼠點擊可以「穿透」這張圖，才不會擋住卡片的連結 */
+    z-index: 10;
+    /* 確保圖片浮在文字上方 */
+}
+
+/* 當滑鼠 hover 到整張卡片 (.lost-pet-card) 時，讓 GIF 顯現 */
+.index-card .lost-pet-card:hover .click-hint-gif {
+    opacity: 1;
+    /* 變成不透明（顯示） */
+}
+
+/* -----------------公立/私有標籤----------------------- */
+.public-Adoption,
+.private-Adoption {
+    background-color: #e06f46;
+    padding: 5px 15px;
+    color: #FFFBF7;
+    font-weight: bolder;
+    /* border-radius: 50px; */
+    transform: rotate(-3deg);
+    position: absolute;
+    top: 10px;
+    /* top: 265px; */
+    font-size: 20px;
+    left: 5px;
+    /* left: 15px; */
+    clip-path: polygon(0% 0%,
+            /* 1. 左上角 */
+            100% 0%,
+            /* 2. 右上角 (往左縮一點，配合右側尖角) */
+            99% 45%,
+            /* 3. 右側中間 (凸出去的尖角頂點) */
+            100% 100%,
+            /* 4. 右下角 (往左縮一點) */
+            2% 100%,
+            
+            /* 5. 左下角 */
+            2% 70%
+            /* 6. 左側中間 (凹進去的轉折點) */
+        );
+}
+
+.private-Adoption {
+    background-color: #81A868;
+}
+
+/* -----------------10天以上標籤----------------------- */
+
+
+.missing-10day,
+.missing-5day {
+    background-color: #9C4332;
+    padding: 5px 15px;
+    color: #FFFBF7;
+    /* border-radius: 50px; */
+    transform: rotate(-1.5deg);
+    font-weight: bolder;
+    position: absolute;
+    top: 235px;
+    font-size: 18px;
+    left: -12px;
+    clip-path: polygon(0% 0%,
+            /* 1. 左上角 */
+            100% 0%,
+            /* 2. 右上角 (往左縮一點，配合右側尖角) */
+            99% 45%,
+            /* 3. 右側中間 (凸出去的尖角頂點) */
+            100% 100%,
+            /* 4. 右下角 (往左縮一點) */
+            0% 100%,
+            /* 5. 左下角 */
+            4% 70%
+            /* 6. 左側中間 (凹進去的轉折點) */
+        );
+}
+.missing-5day {
+     background-color: #fff761;
+     color: #504033;
+}
+
+
+/* -----------------滾動條----------------- */
+
+/* 1. 基礎樣式：重置瀏覽器預設樣式，設定軌道基礎 */
+#index_scrollBar,
+#index_scrollBar_missing {
+    /* 移除 Webkit 瀏覽器預設樣式 */
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    /* 軌道高度 */
+    background: #e0e0e0;
+    /* 軌道顏色：淺灰色 */
+    border-radius: 5px;
+    /* 軌道圓角 */
+    margin: 10px 0;
+}
+
+/* 2. Webkit (Chrome/Safari/Edge) - 軌道樣式 */
+#index_scrollBar::-webkit-slider-runnable-track,
+#index_scrollBar_missing::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    background: #FFFBF7;
+    /* 軌道顏色 */
+    border-radius: 10px;
+}
+
+/* 3. Webkit (Chrome/Safari/Edge) - 拖動條 (Thumb) 樣式 - 子彈型 */
+#index_scrollBar::-webkit-slider-thumb,
+#index_scrollBar_missing::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 8px;
+    /* 拖動條高度 (影響子彈大小) */
+    width: 200px;
+    /* 拖動條寬度 (影響子彈大小) */
+    border-radius: 10px;
+    /* 設置為 50% 實現圓形/子彈頭 */
+    background: #E9E2D8;
+    /* 拖動條顏色：您側邊欄的顏色 */
+    cursor: pointer;
+    /* 調整位置使其在軌道中央，計算方式: -(拖動條高度 - 軌道高度) / 2 */
+    margin-top: 1px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    /* 可選：增加 Hover 效果 */
+    /* transition: background 0.3s ease; */
+}
+
+#index_scrollBar::-webkit-slider-thumb:hover,
+#index_scrollBar_missing::-webkit-slider-thumb:hover {
+    background: #756B61;
+    /* Hover 時顏色變深 */
+}
+
+
+/* 4. Firefox - 軌道樣式 */
+#index_scrollBar::-moz-range-track,
+#index_scrollBar_missing::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #FFFBF7;
+    /* 軌道顏色 */
+    border-radius: 5px;
+}
+
+/* 5. Firefox - 拖動條 (Thumb) 樣式 - 子彈型 */
+#index_scrollBar::-moz-range-thumb,
+#index_scrollBar_missing::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
+    border: none;
+    /* 移除預設邊框 */
+    border-radius: 50%;
+    /* 圓形/子彈頭 */
+    background: #97795D;
+    /* 🚀 拖動條顏色 */
+    margin-left: 2px;
+    margin-right: 2px;
+    cursor: pointer;
+    /* transition: background 0.3s ease; */
+}
+
+#index_scrollBar::-moz-range-thumb:hover,
+#index_scrollBar_missing::-moz-range-thumb:hover {
+    background: #756B61;
+}

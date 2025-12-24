@@ -1,0 +1,218 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客服 Room</title>
+    <link rel="stylesheet" href="../css/modules/chatServer.css" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <style>
+    body {
+        /* 這裡用了一張隨機的網路圖片方便你直接測試效果 */
+        background: url('../assets/img/Chatphoto/img/bkk.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+ 
+</style>
+</head>
+
+<body>
+  
+    <div id="floating-chat">
+      
+      <div id="minimized-ball-icon" onclick="toggleChatWindow()">
+        <i class="fa-solid fa-headset"></i>
+        <div id="global-red-dot" class="red-dot-badge" ></div>
+
+      </div>
+
+
+      <div id="chat-window-content">
+          
+          <div id="global-navbar">
+            <div class="global-navbar-left"></div>
+
+            <div class="global-center-header">
+              <span class="global-title">客服Room</span>
+              <!-- <div class="global-user-icon">
+                <img id="header-avatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2NjYyI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00czLTEuNzktNC00LTRzLTQgMS43OS00IDRzMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYy04LTIuNjYtOC00LTh6Ii8+PC9zdmc+" alt="User Avatar"/>
+              </div> -->
+            </div>
+
+            <div class="global-navbar-right">
+              <button class="close-button" id="minimize-button">
+                <i id="minimize-arrow" class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="container">
+            
+            <div class="sidebar-left">
+              <div class="tab-menu">
+                <button id="tab-pending" class="active-tab" onclick="switchTab('pending')">待處理</button>
+                <button id="tab-completed" onclick="switchTab('completed')">已完成</button>
+                <button id="tab-email" onclick="switchTab('email')">Q&A </button>
+              </div>
+
+              <div class="conversation-list" id="chat-list-container">
+              </div>
+            </div>
+
+            <div class="chat-main">
+              <div id="messages">
+                <div class="message-row received">
+                    <div class="avatar-area">
+                        <img class="chat-msg-avatar" src="../assets/img/Chatphoto/img/耳機狗.png" alt="Avatar">
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">系統</div>
+                        <div class="message-bubble received-bubble">🌟小Tips：客服人員上班時間為9:00am~16:00pm
+非上班時間無法回復，感謝您的體諒~</div>
+                    </div>
+                    <div class="message-timestamp">待機中</div>
+                </div>
+              </div>
+
+              <div class="chat-footer">
+              
+                <div id="expanded-menu" style="display: none;">
+                    <div class="menu-item" onclick="toggleQuickReplies(event)">
+                        <div class="menu-icon-big" style="background-color: #e9e2d8; color:  #c0874e;">
+                           <i class="far fa-comment-dots"></i>
+                        </div>
+                        <span>常用語</span>
+                    </div>
+
+                    <div class="menu-item" onclick="openPrivateNote()">
+                        <div class="menu-icon-big" style="background-color: #fff3e0; color: #9c4332;">
+                            <i class="fa-solid fa-note-sticky"></i>
+                        </div>
+                        <span>備忘錄</span>
+                    </div>
+
+                    <div class="menu-item" onclick="archiveChat()">
+                        <div class="menu-icon-big" style="background-color: #d5c8b8; color: #fff;">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                        <span>結束對話</span>
+                    </div>
+                </div>
+
+                <div id="quick-reply-menu" class="quick-reply-menu" style="display: none;">
+                    <div class="quick-reply-header">
+                        <span><i class="fa-solid fa-paw"></i> 常用語</span>
+                        <span onclick="toggleQuickReplies(event)" style="cursor: pointer;">&times;</span>
+                    </div>
+                    <div class="quick-reply-list">
+                        </div>
+                </div>
+
+                <div id="sticker-area" style="display: none;">
+                     <img src="../assets/img/Chatphoto/img/STICKER3.PNG" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/C1.PNG" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/C2.PNG" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/迪多.jpg" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/s1.jpg" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/s2.jpg" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/s3.PNG" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/迪多.jpg" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/s4.png" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/s4.png" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/s4.png" class="sticker-item" />
+                     <img src="../assets/img/Chatphoto/img/頭.png" class="sticker-item" />
+                </div>
+
+                <div class="input-row">
+                  <div class="footer-icons">
+                    <i id="plus-menu-icon" class="fa-solid fa-plus footer-icon-btn"></i>
+                    <i id="image-upload-icon" class="fa-regular fa-image footer-icon-btn"></i>
+                  </div>
+                  <input type="file" id="file-input" style="display: none;" accept="image/*">
+                  <div class="input-wrapper">
+                    <input type="text" id="message-input" placeholder="輸入訊息...">
+                    <i id="emoji-keyboard-icon" class="fa-regular fa-face-smile input-face-icon"></i>
+                  </div>
+                  <button class="send-btn" onclick="sendMessage()">
+                    <i class="fa-solid fa-paw"></i>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+<div class="sidebar-right">
+  <div class="info-header">用戶資料</div>
+  
+  <div class="info-list">
+    <div class="info-item">
+      <div class="info-icon-wrapper">
+         <!-- <img id="right-sidebar-avatar" src="../assets/img/Chatphoto/img/s4.png" onerror="this.src='https://via.placeholder.com/40'" class="info-avatar-img"/> -->
+      </div>
+      <div class="info-text-wrapper">
+          <span class="info-label" id="info-name">送養人</span>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon-wrapper">
+        <i class="fa-regular fa-envelope"></i>
+      </div>
+      <div class="info-text-wrapper">
+          <span class="info-text" id="info-email">aaa@gmail.com</span>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon-wrapper">
+        <i class="fa-solid fa-phone"></i>
+      </div>
+      <div class="info-text-wrapper">
+          <span class="info-text" id="info-phone">0911-111-111</span>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon-wrapper">
+        <i class="fa-solid fa-location-dot"></i>
+      </div>
+      <div class="info-text-wrapper">
+          <span class="info-text" id="info-address">台中市</span>
+      </div>
+    </div>
+
+    <div class="info-note-area">
+       
+        <textarea id="info-note" placeholder="在此輸入備註..."></textarea>
+    </div>
+
+  </div>
+
+  <button class="action-button">封鎖用戶</button>
+</div>
+
+          </div> </div> </div><script type="module" src="../js/modules/chatserver.js"></script>
+
+<script>
+    window.onload = function() {
+        console.log("網頁載入完成，呼叫 initChatServer...");
+        
+     
+        setTimeout(() => {
+            if (window.initChatServer) {
+                window.initChatServer();
+            } else {
+                console.error("❌ 找不到 initChatServer，可能是 JS 載入失敗");
+            }
+        }, 100); 
+    }
+</script>
+
+
+       
+</body>
+

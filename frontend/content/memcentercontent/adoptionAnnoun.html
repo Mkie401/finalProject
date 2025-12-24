@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="/css/modules/card.css">
+<script src="/js/modules/card.js"></script>
+
+<div class="announ">
+    <!--標題-->
+    <p class="containertitle">送養刊登狀態</p>
+
+    <!--刊登送養按鈕-->
+    <button class="publish-btn">刊登送養</button>
+
+</div>
+<!--內容-->
+<div class="memcenter-container">
+
+    <!--卡片-->
+    <div class="card card-wrapper" data-id="card">
+        <div class="card-overlay"></div> <!-- 遮罩層 -->
+        <div class="row">
+
+            <!--照片-->
+            <div class="col-md-4">
+                <img class="petimg img-fluid rounded-start" src="/assets/img/logo/Logo.png">
+            </div>
+
+            <!--內容-->
+            <div class="col-md-6">
+
+                <p class="card-text">姓名 :</p>
+                <p class="card-text">性別 :</p>
+                <p class="card-text">品種 :</p>
+
+                <!--按鈕-->
+                <div id="card_btn">
+                    <button class="btn card_btn">審核中</button>
+                    <button class="btn card_btn cardremove" data-id="card">下架</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <!--卡片-->
+    <div class="card card-wrapper" data-id="card">
+        <div class="card-overlay"></div> <!-- 遮罩層 -->
+        <div class="row">
+
+            <!--照片-->
+            <div class="col-md-4">
+                <img class="petimg img-fluid rounded-start" src="/assets/img/logo/Logo.png">
+            </div>
+
+            <!--內容-->
+            <div class="col-md-6">
+
+                <p class="card-text">姓名 :</p>
+                <p class="card-text">性別 :</p>
+                <p class="card-text">品種 :</p>
+
+                <!--按鈕-->
+                <div id="card_btn">
+                    <button class="btn card_btn">審核中</button>
+                    <button class="btn card_btn cardremove" data-id="card">下架</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--下架 Modal-->
+<div class="modal fade " id="cardremove_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content cardremovemodalcontent" style="background-color: #fffff6;">
+            <div class="modal-header">
+                <h5 class="modal-title">是否同意下架?</h5>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">取消</button>
+                <button type="button" id="confirmRemoveBtn" class="btn">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
