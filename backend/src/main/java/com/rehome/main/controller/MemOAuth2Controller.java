@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rehome.main.entity.MemEntity;
-import com.rehome.main.repository.MemRepository;
+import com.rehome.main.entity.Member;
+import com.rehome.main.repository.MemberRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/mem/oauth2")
 public class MemOAuth2Controller {
     @Autowired
-    private MemRepository memRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -38,7 +38,7 @@ public class MemOAuth2Controller {
         System.out.println("Name : " + name);
 
         // 檢查會員是否存在於資料庫中
-        boolean memberExists = memRepository.existsByEmail(email);
+        boolean memberExists = memberRepository.existsByEmail(email);
 
         if(memberExists){
             System.out.println("會員已存在 : " + email);
@@ -46,18 +46,18 @@ public class MemOAuth2Controller {
             System.out.println("新會員 : " + email);
             
             // 建立新會員
-            MemEntity newMember = new MemEntity();
+            Member newMember = new Member();
             newMember.setEmail(email);
             newMember.setName(name);
             newMember.setNickName(null);
             String randomPassword = UUID.randomUUID().toString();
-            newMember.setPassword(passwordEncoder.encode(randomPassword));
+            newMember.setPasswordHash(passwordEncoder.encode(randomPassword));
             newMember.setGender(null);
             newMember.setPhone(null);
             newMember.setBirthDate(null);
 
             // 存進資料庫
-            memRepository.save(newMember);
+            memberRepository.save(newMember);
             System.out.println("新會員建立成功");
         }
         

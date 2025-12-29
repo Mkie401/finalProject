@@ -37,7 +37,7 @@ public class MemJwtUtil {
     }
     
     // 生成 Token
-    public String generateToken(String email, Integer memberId) {
+    public String generateToken(String email, Long memberId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
         claims.put("memberId", memberId);
@@ -75,13 +75,14 @@ public class MemJwtUtil {
     }
     
     // 從 Token 取得會員 ID
-    public Integer getMemberIdFromToken(String token) {
+    public Long getMemberIdFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return (Integer) claims.get("memberId");
+        Number memberId = (Number) claims.get("memberId");
+        return memberId != null ? memberId.longValue() : null;
     }
 
 }
