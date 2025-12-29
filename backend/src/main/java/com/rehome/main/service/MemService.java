@@ -10,9 +10,9 @@ import com.rehome.main.dto.request.MemLoginRequest;
 import com.rehome.main.dto.request.MemRequest;
 import com.rehome.main.dto.response.MemLoginResponse;
 import com.rehome.main.dto.response.MemResponse;
-import com.rehome.main.entity.MemEntity;
+import com.rehome.main.entity.Member;
 import com.rehome.main.entity.PasswordResetTokenEntity;
-import com.rehome.main.repository.MemRepository;
+import com.rehome.main.repository.MemberRepository;
 import com.rehome.main.repository.PasswordResetTokenRepository;
 import com.rehome.main.utils.MemJwtUtil;
 
@@ -20,7 +20,7 @@ import com.rehome.main.utils.MemJwtUtil;
 public class MemService {
     
     @Autowired
-    private MemRepository memRepository;
+    private MemberRepository memberRepository;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,30 +41,32 @@ public class MemService {
     public MemResponse register(MemRequest request) {
 
         // 檢查 email 是否已存在
-        if (memRepository.existsByEmail(request.getEmail())) {
+        if (memberRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("此 Email 已被註冊");
         }
         
         // 建立 Entity 物件
-        MemEntity entity = new MemEntity();
+        Member entity = new Member();
         entity.setEmail(request.getEmail());
-        entity.setPassword(passwordEncoder.encode(request.getPassword())); // 加密密碼
+        entity.setPasswordHash(passwordEncoder.encode(request.getPassword())); // 加密密碼
         entity.setName(request.getName());
         entity.setGender(request.isGender());
-        entity.setBirthDate(request.getBirthDate());
+        if (request.getBirthDate() != null) {
+            entity.setBirthDate(new java.sql.Date(request.getBirthDate().getTime()));
+        }
         entity.setPhone(request.getPhone());
         
         // 儲存到資料庫
-        MemEntity savedEntity = memRepository.save(entity);
+        Member savedEntity = memberRepository.save(entity);
         
         // 轉換成 Response 回傳
         return convertToResponse(savedEntity);
     }
     
     // Entity 轉 Response DTO
-    private MemResponse convertToResponse(MemEntity entity) {
+    private MemResponse convertToResponse(Member entity) {
         MemResponse response = new MemResponse();
-        response.setId(entity.getId());
+        response.setId(entity.getId().intValue());
         response.setEmail(entity.getEmail());
         response.setName(entity.getName());
         response.setNickName(entity.getNickName());
@@ -77,7 +79,7 @@ public class MemService {
     // 根據會員ID查詢資料
     public MemResponse getMemberById(Integer memberId) {
 
-        MemEntity entity = memRepository.findById(memberId)
+        Member entity = memberRepository.findById(memberId.longValue())
                 .orElseThrow(() -> new RuntimeException("會員不存在"));
 
         return convertToResponse(entity);
@@ -86,11 +88,11 @@ public class MemService {
     // 基本資料 - 更新暱稱
     public MemResponse updateNickName(Integer memberId, String newNickName) {
 
-        MemEntity entity = memRepository.findById(memberId)
+        Member entity = memberRepository.findById(memberId.longValue())
                 .orElseThrow(() -> new RuntimeException("會員不存在"));
 
         entity.setNickName(newNickName);
-        MemEntity updatedEntity = memRepository.save(entity);
+        Member updatedEntity = memberRepository.save(entity);
 
         return convertToResponse(updatedEntity);
     }
@@ -98,19 +100,19 @@ public class MemService {
     // 基本資料 - 更新密碼
     public void updatePassword(Integer memberId, String oldPassword, String newPassword) {
 
-        MemEntity entity = memRepository.findById(memberId)
+        Member entity = memberRepository.findById(memberId.longValue())
                 .orElseThrow(() -> new RuntimeException("會員不存在"));
         
         // 比對舊密碼
-        if(!passwordEncoder.matches(oldPassword, entity.getPassword())){
+        if(!passwordEncoder.matches(oldPassword, entity.getPasswordHash())){
             throw new RuntimeException("舊密碼不正確");
         }
 
         // 更新加密
-        entity.setPassword(passwordEncoder.encode(newPassword));
+        entity.setPasswordHash(passwordEncoder.encode(newPassword));
 
         // 儲存
-        memRepository.save(entity);
+        memberRepository.save(entity);
     }
 
     // 登入
@@ -126,7 +128,7 @@ public class MemService {
         }
 
         // 根據 email 查找會員
-        MemEntity member = memRepository.findByEmail(request.getEmail());
+        Member member = memberRepository.findByEmail(request.getEmail()).orElse(null);
 
         // 檢查會員是否存在
         if(member == null) {
@@ -136,7 +138,7 @@ public class MemService {
         }
 
         // 比對密碼
-        if(!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+        if(!passwordEncoder.matches(request.getPassword(), member.getPasswordHash())) {
             response.setSuccess(false);
             response.setMessage("密碼錯誤");
             return response;
@@ -160,8 +162,7 @@ public class MemService {
     public void requestPasswordReset(String email) {
         
         // 檢查會員是否存在
-        MemEntity member = memRepository.findByEmail(email);
-        if (member == null) {
+        if (!memberRepository.existsByEmail(email)) {
             throw new RuntimeException("此 Email 尚未註冊");
         }
         
@@ -220,14 +221,14 @@ public class MemService {
         }
         
         // 查詢會員
-        MemEntity member = memRepository.findByEmail(resetToken.getEmail());
+        Member member = memberRepository.findByEmail(resetToken.getEmail()).orElse(null);
         if (member == null) {
             throw new RuntimeException("會員不存在");
         }
         
         // 更新密碼
-        member.setPassword(passwordEncoder.encode(newPassword));
-        memRepository.save(member);
+        member.setPasswordHash(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
         
         // 標記 Token 為已使用
         resetToken.setUsed(true);
@@ -237,7 +238,7 @@ public class MemService {
     // 儲存會員頭像
     public void saveAvatar(Integer memberId, String base64Date) {
         // 查詢會員
-        MemEntity member = memRepository.findById(memberId)
+        Member member = memberRepository.findById(memberId.longValue())
                 .orElseThrow(() -> new RuntimeException("會員不存在"));
 
         try {
@@ -257,7 +258,7 @@ public class MemService {
 
             // 儲存頭像
             member.setIcon(imageBytes);
-            memRepository.save(member);
+            memberRepository.save(member);
 
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Base64 解碼失敗，請確認圖片格式正確");
@@ -272,7 +273,7 @@ public class MemService {
     // 取得會員頭像
     public byte[] getAvatar(Integer memberId) {
         // 查詢會員
-        MemEntity member = memRepository.findById(memberId)
+        Member member = memberRepository.findById(memberId.longValue())
                 .orElseThrow(() -> new RuntimeException("會員不存在"));
 
         return member.getIcon();
