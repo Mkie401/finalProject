@@ -76,7 +76,7 @@ public class Case {
     private Member member;
 
     @OneToMany(mappedBy = "petCase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OrderColumn(name = "city_id")
+    // @OrderColumn(name = "city_id") // city_id is a FK, using it as OrderColumn will corrupt the data
     private List<AdoptionPetArea> adoptionPetAreas;
 
     @OneToMany(mappedBy = "petCase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

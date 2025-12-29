@@ -22,8 +22,8 @@ import com.rehome.main.entity.CaseType;
 import com.rehome.main.entity.City;
 import com.rehome.main.entity.Contact;
 import com.rehome.main.entity.Member;
-import com.rehome.main.entity.PetAdoptionCity;
-import com.rehome.main.entity.PetAdoptionCityId;
+import com.rehome.main.entity.AdoptionPetArea;
+import com.rehome.main.entity.AdoptionPetAreaId;
 import com.rehome.main.entity.AnimalSpecies;
 import com.rehome.main.entity.Case;
 import com.rehome.main.entity.CaseStatus;
@@ -140,21 +140,22 @@ public class PetIofnServer {
         List<Long> adoptCityIds = infDto.getAdoptCityIds();
         if(adoptCityIds != null && !adoptCityIds.isEmpty()){
             Set<Long> uniqueCityIds = new HashSet<>(adoptCityIds);
-           for (Long cityId : uniqueCityIds){
-                City  city = petCityRep.findById(cityId).orElseThrow(() -> new RuntimeException("送養城市不存在: " + cityId));
+            if (petCase.getAdoptionPetAreas() == null) {
+                petCase.setAdoptionPetAreas(new ArrayList<>());
+            }
+            for (Long cityId : uniqueCityIds){
+                City city = petCityRep.findById(cityId).orElseThrow(() -> new RuntimeException("送養城市不存在: " + cityId));
                 //建立中介物件
-               PetAdoptionCity adoptionCity = new PetAdoptionCity();
-                adoptionCity.setPetCase(petCase);
-                adoptionCity.setPerCity(city);
+                AdoptionPetArea adoptionPetArea = new AdoptionPetArea();
+                adoptionPetArea.setPetCase(petCase);
+                adoptionPetArea.setCity(city);
 
-                PetAdoptionCityId adoptionCityId = new PetAdoptionCityId();
-                adoptionCityId.setCaseId(petCase.getId());
-                adoptionCityId.setCityId(city.getId());
-                adoptionCity.setPaaid(adoptionCityId);
+                // Initialize ID
+                AdoptionPetAreaId id = new AdoptionPetAreaId(petCase.getId(), city.getId());
+                adoptionPetArea.setId(id);
 
-               // 這裡需要直接保存到資料庫，而不是通過 petCase 關聯
-               // 因為可能需要使用專門的 repository 來保存 PetAdoptionCity
-            
+                // Add to Case
+                petCase.getAdoptionPetAreas().add(adoptionPetArea);
             }
             petCaseRep.save(petCase);
         }
